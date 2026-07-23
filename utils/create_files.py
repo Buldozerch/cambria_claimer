@@ -27,18 +27,18 @@ def create_users():
     for evm_private in evm_privates:
         evm_private = evm_private.strip()
         if get_user_private_evm(private_evm=evm_private):
-            count += 1
             continue
         proxy = None
         sol_address = None
         sol_private = None
-        if len(proxys) >= count:
+        if proxys and len(proxys) >= count:
             proxy = proxys[count].strip()
-        if len(sol_privates) >= count:
+        if sol_privates and len(sol_privates) >= count:
             sol_private = sol_privates[count].strip()
             keypair = Keypair.from_base58_string(sol_private)
             sol_address = keypair.pubkey()
+        sol_address = str(sol_address) if sol_address else None
         evm_address = Account.from_key(evm_private).address
-        create_user(evm_private=evm_private, evm_address=evm_address,sol_private=sol_private, sol_address=str(sol_address),proxy=proxy)
+        create_user(evm_private=evm_private, evm_address=evm_address,sol_private=sol_private, sol_address=sol_address,proxy=proxy)
         count += 1
 

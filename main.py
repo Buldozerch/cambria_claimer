@@ -8,8 +8,11 @@ semaphore = asyncio.Semaphore(2)
 
 async def start_action(user: User):
     async with semaphore:
-        cambria = Cambria(user=user)
-        await cambria.start_work()
+        try:
+            cambria = Cambria(user=user)
+            await cambria.start_work()
+        except Exception as e:
+            print(f"{user.evm_address} has error: {e}")
 
 async def main():
     user_input = int(input(f"Choose action:\n1. Init DB\n2. Start Actions\nAction: "))

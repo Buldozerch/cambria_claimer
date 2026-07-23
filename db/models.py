@@ -9,7 +9,7 @@ class User(Base):
     evm_private: Mapped[str] = mapped_column(unique=True)
     evm_address: Mapped[str] = mapped_column(unique=True)
     sol_private: Mapped[str] = mapped_column(nullable=True)
-    sol_address: Mapped[str] = mapped_column(unique=True)
+    sol_address: Mapped[str] = mapped_column(nullable=True)
     proxy: Mapped[str] = mapped_column(nullable=True)
     common_chests: Mapped[int] = mapped_column(default=0)
     epic_chests: Mapped[int] = mapped_column(default=0)

@@ -69,13 +69,13 @@ class Cambria:
         
     async def start_work(self):
         async with aiohttp.ClientSession() as session:
-            print("Start work!")
             self.session = session
             await self.check_proxy()
             await self.privy_login()
             await self.get_cambria_session()
             await self.create_account()
             if self.user.sol_address and not await self.get_solana_wallets():
+                print("start link sol wallet")
                 await self.link_sol_wallet()
             await self.claim_loot_drop()
 
