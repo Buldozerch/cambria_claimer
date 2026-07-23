@@ -4,6 +4,7 @@ def create_files():
     Path("files/private_evm.txt").touch(exist_ok=True)
     Path("files/private_sol.txt").touch(exist_ok=True)
     Path("files/proxy.txt").touch(exist_ok=True)
+    from db import user_api
 
 import random
 from eth_account import Account

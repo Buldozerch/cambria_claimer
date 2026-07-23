@@ -1,8 +1,8 @@
 from utils.create_files import create_files, create_users 
 create_files()
-from db.user_api import User, get_users
 from cambria import Cambria
 import asyncio
+from db.user_api import User, get_users
 
 # CHANGE FOR MORE ACCOUNTS 
 semaphore = asyncio.Semaphore(2)
