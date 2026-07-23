@@ -1,3 +1,4 @@
+from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
@@ -6,6 +7,7 @@ from .models import Base
 # class DataBase
 class DB:
     def __init__(self):
+        Path("files").mkdir(exist_ok=True)
         self.engine = create_engine("sqlite:///files/accounts.db")
         self.session = Session(bind=self.engine)
 
