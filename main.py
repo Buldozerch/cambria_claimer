@@ -8,6 +8,8 @@ from db.user_api import User, get_users
 semaphore = asyncio.Semaphore(2)
 
 async def start_action(user: User):
+    if user.common_chests or user.epic_chests or user.legendary_chests:
+        return
     async with semaphore:
         try:
             cambria = Cambria(user=user)
