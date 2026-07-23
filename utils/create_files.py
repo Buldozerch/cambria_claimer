@@ -1,15 +1,16 @@
 from pathlib import Path
+def create_files():
+    Path("files").mkdir(exist_ok=True)
+    Path("files/private_evm.txt").touch(exist_ok=True)
+    Path("files/private_sol.txt").touch(exist_ok=True)
+    Path("files/proxy.txt").touch(exist_ok=True)
+
 import random
 from eth_account import Account
 from solders.keypair import Keypair
 from db.user_api import create_user, get_user_private_evm
 
 
-def create_files():
-    Path("files").mkdir(exist_ok=True)
-    Path("files/private_evm.txt").touch(exist_ok=True)
-    Path("files/private_sol.txt").touch(exist_ok=True)
-    Path("files/proxy.txt").touch(exist_ok=True)
 
 with open("files/private_evm.txt", "r") as file_evm_private:
     evm_privates = file_evm_private.readlines()
