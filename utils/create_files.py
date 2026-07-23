@@ -21,6 +21,7 @@ with open("files/private_sol.txt", "r") as file_sol_private:
 
 def get_random_proxy():
     return random.choice(proxys)
+
 def create_users():
     count = 0
     for evm_private in evm_privates:
