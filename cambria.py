@@ -14,7 +14,7 @@ from faker import Faker
 
 class Cambria:
     def __init__(self, user: User) -> None:
-        self.user = user
+        self.user: User = user
         self.session: ClientSession
         self.privy_headers = {'accept': 'application/json',
             'accept-language': 'en-US,en;q=0.6',
@@ -74,10 +74,11 @@ class Cambria:
             await self.privy_login()
             await self.get_cambria_session()
             await self.create_account()
-            if self.user.sol_address and not await self.get_solana_wallets():
-                print("start link sol wallet")
-                await self.link_sol_wallet()
-            await self.claim_loot_drop()
+            await self.sign_drop()
+            # if self.user.sol_address and not await self.get_solana_wallets():
+            #     print("start link sol wallet")
+            #     await self.link_sol_wallet()
+            # await self.claim_loot_drop()
 
     async def get_solana_wallets(self):
         response = await self.session.get(url="https://lobby-api.cambria.gg/solana/wallets", cookies=self.cambria_cookies, headers=self.cambria_headers, proxy=self.user.proxy)
@@ -86,6 +87,27 @@ class Cambria:
             if wallet['solanaAddress'] == self.user.sol_address:
                 return True
         return False
+
+    async def sign_drop(self):
+        message = f'Cambria - Genesis Event Opt-in Agreement\n\nI acknowledge and agree to the terms and conditions of the Genesis Event Opt-In Agreement. This signature designates the wallet below as my primary wallet for interacting with token-related functionality for the Genesis Event.\n\nWallet: {self.user.evm_address}\nVersion: genesis-event-opt-in-2026-09-14-v3'
+        signed = Account.sign_message(
+            encode_defunct(text=message),
+            self.user.evm_private
+        )
+        signature = signed.signature.hex()
+        signature = "0x" + signature
+        json_data = {
+            'wallet_address': self.user.evm_address,
+            'signature': signature,
+        }
+        response = await self.session.post(url="https://lobby-api.cambria.gg/genesis-event/notice/sign", json=json_data, cookies=self.cambria_cookies, headers=self.cambria_headers, proxy=self.user.proxy)
+        data = await response.json()
+        print(data)
+        if response.status == 200:
+            print(f"{self.user.evm_address} success sign message")
+        return True
+        
+
 
 
     async def link_sol_wallet(self):
